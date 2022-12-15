@@ -1,4 +1,4 @@
-# Functional Programming labs and Tasks
+# Functional Programming Labs and Tasks
 Written in Haskell programming language
 ___
 ## Lab1
