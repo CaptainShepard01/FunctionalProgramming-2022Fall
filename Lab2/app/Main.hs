@@ -4,16 +4,16 @@ import Lib
 import System.IO
 import Control.Concurrent
 
-showResult :: [Int] -> Int -> Int -> Int -> IO String
-showResult interval base modulus remainder = do
+getResult :: [Int] -> Int -> Int -> Int -> IO String
+getResult interval base modulus remainder = do
   tid <- myThreadId
-  let solved = multipleSolve interval base modulus remainder
+  let solved = solveForInterval interval base modulus remainder
   let result = "Result " ++ show tid ++ " : " ++ show solved
   return $! result
 
-solveSingle :: MVar () -> Chan () -> [Int] -> Int -> Int -> Int -> IO()
-solveSingle mutex endFlags interval base modulus remainder = do
-  solution <- showResult interval base modulus remainder
+solveSingleThread :: MVar () -> Chan () -> [Int] -> Int -> Int -> Int -> IO()
+solveSingleThread mutex endFlags interval base modulus remainder = do
+  solution <- getResult interval base modulus remainder
   takeMVar mutex
   putStrLn solution
   putMVar mutex ()
@@ -22,7 +22,7 @@ solveSingle mutex endFlags interval base modulus remainder = do
 main :: IO()
 main = do
   putStrLn "Enter base, modulus and remainder of b^x = d (mod m)"
-  putStrLn "Example with: 2^x = 8 (mod 13)"
+  putStrLn "Example with: 2^x = 17 (mod 37)"
   putStrLn "Base:"
   input1 <- getLine
   putStrLn "Modulus:"
@@ -37,10 +37,10 @@ main = do
   mutex <- newEmptyMVar
   endFlags <- newChan
 
-  forkIO $ solveSingle mutex endFlags [1..10] base modulus remainder
-  forkIO $ solveSingle mutex endFlags [11..20] base modulus remainder
-  forkIO $ solveSingle mutex endFlags [21..30] base modulus remainder
-  forkIO $ solveSingle mutex endFlags [31..40] base modulus remainder
+  forkIO $ solveSingleThread mutex endFlags [1..10] base modulus remainder
+  forkIO $ solveSingleThread mutex endFlags [11..20] base modulus remainder
+  forkIO $ solveSingleThread mutex endFlags [21..30] base modulus remainder
+  forkIO $ solveSingleThread mutex endFlags [31..40] base modulus remainder
 
   putMVar mutex ()
   mapM_ (const $ readChan endFlags) [1..4]

@@ -1,11 +1,11 @@
 module Lib
     ( 
-    multipleSolve
+    solveForInterval
     ) where
 
 
-multipleSolve :: [Int] -> Int -> Int -> Int -> [Int]
-multipleSolve candidates base mod_ res = [x | x <- candidates, singleSolve x base mod_ res]
+solveForInterval :: [Int] -> Int -> Int -> Int -> [Int]
+solveForInterval candidates base mod_ res = [x | x <- candidates, solveForOne x base mod_ res]
     
-singleSolve :: Int -> Int -> Int -> Int -> Bool
-singleSolve candidate base mod_ res = base ^ candidate `mod` mod_ == res
+solveForOne :: Int -> Int -> Int -> Int -> Bool
+solveForOne candidate base mod_ res = base ^ candidate `mod` mod_ == res
