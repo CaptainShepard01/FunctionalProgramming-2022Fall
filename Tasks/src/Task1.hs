@@ -40,14 +40,9 @@ printBoard size solution = board [0..size-1] where
     board     = unlines . intersperseWrap separator . map line
     intersperseWrap s ss = s : intersperse s ss ++ [s]
 
-go size = case solve size M.empty 1 (0, 0) of
+go size xy = case solve size M.empty 1 xy of
     []    -> "No solution found"
     (s:_) -> printBoard size s
 
-task1 = do
-    args <- getArgs
-    name <- getProgName
-    putStrLn $ case map reads args of
-        []             -> go 8
-        [[(size, "")]] -> go size
-        _              -> "Usage: " ++ name ++ " <size>"
+task1 xy = do
+    putStrLn $ go 8 xy
