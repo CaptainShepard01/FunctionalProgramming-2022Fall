@@ -25,7 +25,7 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      DiscreteLogarithm
   other-modules:
       Paths_Lab2
   hs-source-dirs:

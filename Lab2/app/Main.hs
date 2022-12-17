@@ -1,6 +1,6 @@
 module Main (main) where
 
-import Lib
+import DiscreteLogarithm
 import System.IO
 import Control.Concurrent
 
